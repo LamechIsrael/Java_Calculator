@@ -8,10 +8,11 @@ button {
   width: 25px;
 }
 
-textarea {
-  width: 117px;
-}
-
 body {
   background-color: midnightblue;
+}
+
+#input {
+  padding-bottom: 10px;
+  width: 117px;
 }
