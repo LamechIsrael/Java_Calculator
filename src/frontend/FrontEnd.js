@@ -44,6 +44,10 @@ for (button of buttons) {
     // This button connects to the back end for math.
   } else if (button.className == "operand") {
     newNumber = true;
+    $.ajax({
+      type: "put",
+      data: "firstNum=" + total + "&secondNum=" + field.value,
+    });
     continue;
   }
 }
