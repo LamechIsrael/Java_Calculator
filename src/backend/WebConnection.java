@@ -16,6 +16,10 @@ public class WebConnection {
 
         // Main Page
 
+        /** This "GET" function will check if any information was received from the calculator app.
+         * If any information is found, the "GET" command will try to calculate based on the request.
+         * The result will be returned to the host.
+         * Otherwise, the app will default to a normal homepage.*/
         app.get("/", context -> {
 
             // Initialize the final result and get the body from the webpage
