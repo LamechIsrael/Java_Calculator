@@ -1,4 +1,4 @@
-# Java_Calculator
+# Full Stack Java Calculator
 
 This is a simple Java project to prove that I can perform Java programming tasks.
 I understand that a calculator seems to be so simple that it wouldn't prove I know anything. But just take a look.
