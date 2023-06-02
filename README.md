@@ -13,3 +13,16 @@ This is because I don't input numbers from the backend but the front.
 So, I show that I can program in HTML, decorate a page with CSS, and create functionality with JavaScript.
 
 All to create a simple Fullstack project.
+
+
+# Fixing the CORS Issue...
+
+The Javalin app wouldn't allow my front end to communicate with it, because localhost apps don't meet the CORS requirements. So, I scoured the internet for a way to fix it.
+
+After some trial and error, I've isolated what I needed to get around the CORS authorization:
+
+Javalin app = Javalin.create(javalinConfig ->
+                javalinConfig.enableCorsForOrigin("")
+        ).start();
+
+Just put into the quotes the root origin your front end is from.
