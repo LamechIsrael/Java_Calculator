@@ -3,15 +3,13 @@ package src.backend;
 import com.google.gson.Gson;
 import io.javalin.Javalin;
 
-import java.net.MalformedURLException;
-
 public class WebConnection {
 
     // Create a Gson that will allow me to read information from the webpage
     public static Gson gson = new Gson();
 
 
-    public static void main(String[] args) throws MalformedURLException {
+    public static void main(String[] args) {
 
         // Get Javalin for web functionality
 
