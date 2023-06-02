@@ -1,4 +1,5 @@
 package src.backend;
+
 import com.google.gson.Gson;
 import io.javalin.Javalin;
 
@@ -11,7 +12,11 @@ public class WebConnection {
     public static void main(String[] args) {
 
         // Get Javalin for web functionality
-        Javalin app = Javalin.create().start();
+
+
+        Javalin app = Javalin.create(javalinConfig ->
+                javalinConfig.enableCorsForOrigin("http://127.0.0.1:3000/")
+        ).start();
 
 
         // Main Page
@@ -21,24 +26,29 @@ public class WebConnection {
          * The result will be returned to the host.
          * Otherwise, the app will default to a normal homepage.*/
         app.get("/", context -> {
+            context.status(200);
+            String message = gson.toJson("Welcome to Lamech's Full Stack Calculator.");
+            context.result(message);
+
+        });
+
+
+        app.patch("/", context -> {
 
             // Initialize the final result and get the body from the webpage
             int result = 0;
             String body = context.body();
 
             // Will default to a normal homepage, if no information is fed to it
-            if (body.length() < 3) {
-                context.status(200);
-                context.result("Welcome to Lamech's Full Stack Calculator.");
 
-
-            } else {
+                System.out.println(body);
                 // If information is received, the application will try to do math
 
                 try {
                     // Turn the Json data into a Gson.
                     // The Gson will create a Numbers object that holds the data needed for operation.
                     Numbers numbers = gson.fromJson(body, Numbers.class);
+                    System.out.println(numbers.toString());
 
                     // Get the numbers and math question from the Numbers object
                     int firstNum = numbers.getFirstNumber();
@@ -68,10 +78,11 @@ public class WebConnection {
 
                 } catch (Exception e) {
                     // If anything is wrong, give a 404 error.
-                    context.result("Error! No math can be done...");
+                    String message = gson.toJson("Error! No math can be done...");
+                    context.result(message);
                     context.status(404);
                 }
-            }
+
         });
     }
 }

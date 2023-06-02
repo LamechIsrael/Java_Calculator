@@ -4,7 +4,6 @@
 const buttons = document.getElementsByTagName("button");
 const field = document.getElementById("inputField");
 const bottomResult = document.getElementById("texter");
-const backendURL = "http://localhost:8080/";
 
 /*Create a global variable for our total
 Also, create a global boolean variable. When the 'newNumber' variable is true, clear the text field.
@@ -61,12 +60,9 @@ for (button of buttons) {
         firstNumGotten = true;
       } else {
         secondNum = field.value;
+        bottomResult.innerHTML = `${firstNum} ${operand} ${secondNum}`;
         sendNumbers(firstNum, operand, secondNum);
       }
-    });
-  } else if (button.id == "connection") {
-    button.addEventListener("click", function (Event) {
-      testConnection();
     });
   }
 }
@@ -77,9 +73,9 @@ async function sendNumbers(firstNum, oper, secondNum) {
     operand: oper,
     secondNumber: secondNum,
   };
-  const response = await fetch(backendURL, {
+  const response = await fetch("calculator.html:3000", {
     body: JSON.stringify(numbers),
-    method: "POST",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
@@ -93,27 +89,6 @@ async function sendNumbers(firstNum, oper, secondNum) {
     alert(`The answer is: ${result}`);
   } else {
     console.log("Didn't Work...");
-    console.log(response);
-    //alert("FAILED TO CONNECT");
-  }
-  bottomResult.innerHTML = `${firstNum} ${operand} ${secondNum} = RESPONSE CODE ${response.status}`;
-}
-
-async function testConnection() {
-  const response = await fetch(backendURL, {
-    method: "GET",
-    headers: { "Content-Type": "text" },
-    mode: "cors",
-  });
-
-  if (response.status === 200) {
-    const body = await response.json();
-    result = body.result;
-    document.getElementById("connection").innerHTML =
-      "Test Connection: Succeeded";
-    console.log(response);
-  } else {
-    console.log("Connection Failed.");
-    document.getElementById("connection").innerHTML = "Test Connection: Failed";
+    alert("FAILED TO CONNECT");
   }
 }
