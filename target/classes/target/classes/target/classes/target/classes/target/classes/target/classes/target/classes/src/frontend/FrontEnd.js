@@ -44,16 +44,9 @@ for (button of buttons) {
     continue;
     // Equals button will finish the equation and put it into the text field.
   } else if (button.className == "equals") {
-    button.addEventListener("click", function (Event) {
-      newNumber = true;
-      secondNum = field.value;
-      console.log(total);
-      console.log(operator);
-      console.log(secondNum);
-      sendNumbers(total, operator, secondNum);
-      operator = "";
-    });
-
+    newNumber = true;
+    secondNum = field.value;
+    sendNumbers(firstNum, operator, secondNum);
     continue;
     // Operand buttons will take the value in the text field and place it into an equation.
     // This button connects to the back end for math.
@@ -61,17 +54,14 @@ for (button of buttons) {
     button.addEventListener("click", function (Event) {
       newNumber = true;
       //console.log(firstNum);
-      if (operator != "") {
-        secondNum = field.value;
 
-        sendNumbers(total, operator, secondNum);
-        operator = id;
+      if (firstNumGotten == false) {
+        firstNum = field.value;
+        operand = id;
+        firstNumGotten = true;
       } else {
-        if (total == 0) {
-          total = field.value;
-        }
-
-        operator = id;
+        secondNum = field.value;
+        sendNumbers(firstNum, operator, secondNum);
       }
     });
   } else if (button.id == "connection") {
@@ -99,14 +89,15 @@ async function sendNumbers(firstNum, oper, secondNum) {
 
   if (response.status === 200) {
     const body = await response.json();
-    bottomResult.innerHTML = `${firstNum} ${oper} ${secondNum} = ${body}`;
-
-    total = body;
+    result = body.result;
+    console.log(result);
+    alert(`The answer is: ${result}`);
   } else {
     console.log("Didn't Work...");
-    console.log(response.status);
+    console.log(response);
     //alert("FAILED TO CONNECT");
   }
+  bottomResult.innerHTML = `${firstNum} ${operator} ${secondNum} = RESPONSE CODE ${response.status}`;
 }
 
 /** This button is just to test if I can connect to the backend.
@@ -115,26 +106,20 @@ async function sendNumbers(firstNum, oper, secondNum) {
  * I created it, because I was tired of opening up the Dev Tools to see if the two apps communicated.
  */
 async function testConnection() {
-  try {
-    const response = await fetch(backendURL, {
-      method: "GET",
-      headers: { "Content-Type": "text" },
-      mode: "cors",
-    });
-    console.log(response);
+  const response = await fetch(backendURL, {
+    method: "GET",
+    headers: { "Content-Type": "text" },
+    mode: "cors",
+  });
 
-    if (response.status === 200) {
-      const body = await response.json();
-      result = body.result;
-      document.getElementById("connection").innerHTML =
-        "Test Connection: Succeeded";
-    } else {
-      console.log("Connection Failed.");
-      document.getElementById("connection").innerHTML =
-        "Test Connection: Failed";
-    }
-  } catch (ERR_CONNECTION_REFUSED) {
+  if (response.status === 200) {
+    const body = await response.json();
+    result = body.result;
     document.getElementById("connection").innerHTML =
-      "Test Connection: Connection Inactive";
+      "Test Connection: Succeeded";
+    console.log(response);
+  } else {
+    console.log("Connection Failed.");
+    document.getElementById("connection").innerHTML = "Test Connection: Failed";
   }
 }
