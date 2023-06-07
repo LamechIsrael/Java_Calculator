@@ -73,6 +73,7 @@ public class WebConnection {
                     }
 
                     // Return the result of the math equation to the webpage
+                    System.out.println(result);
                     context.result(String.valueOf(result));
                     context.status(200);
 
